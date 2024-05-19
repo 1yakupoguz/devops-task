@@ -1,7 +1,7 @@
 # DevOps Ödevi
 
-1.  ## Rocky 9, Debian 12 ya da Ubuntu LTS Server 22.04 dağıtımlarından birini kullanmalısınız.
-    ## Dağıtım en az sayıda paketle kurulmuş olmalı ve servisin kendisiyle ilgili olmayan ek paketler kurulmamalı (ör: X sunucu) 
+## 1.  Rocky 9, Debian 12 ya da Ubuntu LTS Server 22.04 dağıtımlarından birini kullanmalısınız.
+Dağıtım en az sayıda paketle kurulmuş olmalı ve servisin kendisiyle ilgili olmayan ek paketler kurulmamalı (ör: X sunucu) 
     - VirtualBox kurulur
     - Ubuntu 22.04 server iso dosyası indirilir
     - VirtualBox'a iso dosyası ile Ubuntu kurulur
@@ -60,32 +60,32 @@
     - Tekrardan conf dosyasını aşağıdaki gibi düzenleyerek iki farklı domain adresinin aynı wordpress sitesine erişmesini sağladık
     ```sh
     <VirtualHost *:80>
-ServerAdmin admin@ozgur.com
-DocumentRoot /var/www/bugday.org/wordpress
-ServerName www.bugday.org
-ServerAlias www.bugday.org
-<Directory /var/www/bugday.org/wordpress/>
-Options FollowSymLinks
-AllowOverride All
-Require all granted
-</Directory>
-ErrorLog ${APACHE_LOG_DIR}/error.log
-CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName www.buğday.org
-    ServerAlias buğday.org
+    ServerAdmin admin@ozgur.com
     DocumentRoot /var/www/bugday.org/wordpress
-    <Directory /var/www/bugday.org/wordpress>
-        Options FollowSymLinks
-        AllowOverride All
-        Require all granted
+    ServerName www.bugday.org
+    ServerAlias www.bugday.org
+    <Directory /var/www/bugday.org/wordpress/>
+    Options FollowSymLinks
+    AllowOverride All
+    Require all granted
     </Directory>
-    ErrorLog ${APACHE_LOG_DIR}/buğday.org-error.log
-    CustomLog ${APACHE_LOG_DIR}/buğday.org-access.log combined
-</VirtualHost>
-```
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    </VirtualHost>
+    
+    <VirtualHost *:80>
+        ServerName www.buğday.org
+        ServerAlias buğday.org
+        DocumentRoot /var/www/bugday.org/wordpress
+        <Directory /var/www/bugday.org/wordpress>
+            Options FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/buğday.org-error.log
+        CustomLog ${APACHE_LOG_DIR}/buğday.org-access.log combined
+    </VirtualHost>
+    ```
 
 8.  ## ozgurstaj2024.com için bir web sitesi oluşturun.
     ## Site için bir web sayfası oluşturun, içinde 100 kere "Kullanıcılarımın kişisel verilerini toplamayacağım." yazsın (her biri yeni bir satırda).
