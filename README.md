@@ -1,19 +1,19 @@
 # DevOps Ödevi
 
-    ## 1.  Rocky 9, Debian 12 ya da Ubuntu LTS Server 22.04 dağıtımlarından birini kullanmalısınız. Dağıtım en az sayıda paketle kurulmuş olmalı ve servisin kendisiyle ilgili olmayan ek paketler kurulmamalı (ör: X sunucu) 
-    - VirtualBox kurulur
-    - Ubuntu 22.04 server iso dosyası indirilir
-    - VirtualBox'a iso dosyası ile Ubuntu kurulur
-    - Ubuntu minimized tercih edilir
-    - Kurulumun ardından belirlenen kullanıcı adı ve şifre ile giriş yapılır
-    - Sunucunun yapılandırılması için cloud-init kurulumu yapılır
+## 1.  Rocky 9, Debian 12 ya da Ubuntu LTS Server 22.04 dağıtımlarından birini kullanmalısınız. Dağıtım en az sayıda paketle kurulmuş olmalı ve servisin kendisiyle ilgili olmayan ek paketler kurulmamalı (ör: X sunucu) 
+- VirtualBox kurulur
+- Ubuntu 22.04 server iso dosyası indirilir
+- VirtualBox'a iso dosyası ile Ubuntu kurulur
+- Ubuntu minimized tercih edilir
+- Kurulumun ardından belirlenen kullanıcı adı ve şifre ile giriş yapılır
+- Sunucunun yapılandırılması için cloud-init kurulumu yapılır
 
-    ## 2.  Bir kullanıcı oluşturmalısınız (root dışında). O kullanıcıya kendi (host) bilgisayarından SSH ile bağlanmalısınız. Bağlantı anahtar (key) temelli gerçekleştirilmeli. SSH servisi için parola ile doğrulamayı kapatın.
-    - Lokal bilgisayarda terminalde aşağıdaki komut kullanılarak ssh key oluşturulur
-    ```sh 
-    ssh-keygen
-    ```
-    - Oluşturulan ssh anahtarı sanal sunucunun ssh/authorized_keys dosyalarının içerisine kopyalanır
+## 2.  Bir kullanıcı oluşturmalısınız (root dışında). O kullanıcıya kendi (host) bilgisayarından SSH ile bağlanmalısınız. Bağlantı anahtar (key) temelli gerçekleştirilmeli. SSH servisi için parola ile doğrulamayı kapatın.
+- Lokal bilgisayarda terminalde aşağıdaki komut kullanılarak ssh key oluşturulur
+```sh 
+ssh-keygen
+```
+- Oluşturulan ssh anahtarı sanal sunucunun ssh/authorized_keys dosyalarının içerisine kopyalanır
 
 3. ## Güvenlik duvarını SSH ve web servisi dışında herhangi bir isteği kabul etmeyecek biçimde ayarlayın.
     - Bunun için UFW kurulumu yapılır. UFW, güvenlik duvarı kurallarını yönetmeyi sağlamaktadır
