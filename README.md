@@ -13,10 +13,37 @@
 ```sh 
 ssh-keygen
 ```
-- Oluşturulan ssh anahtarı sanal sunucunun ssh/authorized_keys dosyalarının içerisine kopyalanır
+- ssh key bilgisayarın .ssh/id_rsa.pub dosyası içerisine kaydedilecektir
+- Oluşturulan ssh anahtarı sanal sunucunun ssh/authorized_keys dosyalarının içerisine aşağıdaki komutla kopyalanır
+```sh
+scp .ssh/id_rsa.pub yaki@192.168.x.x:~/yaki_rsa.pub
+```
+- Şimdi sanal sunucuya kopyalanan dosyadaki key'i izin verilen keyler içerisine yazma vakti, aşağıdaki komut ile bunu yapmak mümkün
+```sh
+cat yaki_rsa.pub >> .ssh/authorized_keys
+```
 
 ##### 3. Güvenlik duvarını SSH ve web servisi dışında herhangi bir isteği kabul etmeyecek biçimde ayarlayın.
-- Bunun için UFW kurulumu yapılır. UFW, güvenlik duvarı kurallarını yönetmeyi sağlamaktadır
+- Bunun için aşağıdaki komutla UFW kurulumu yapılır. UFW, güvenlik duvarı kurallarını yönetmeyi sağlamaktadır
+```sh
+apt install ufw
+```
+- Aşağıdaki komutu kullanarak aktif olup olmadığını sorgulayabilirsiniz
+```sh
+systemctl status ufw
+```
+- Aktiflikten emin olduktan sonra aşağıdaki komutlar ile kurallar belirlenir
+```sh
+ufw default allow outgoing
+ufw default deny incoming
+ufw allow ssh
+ufw allow http/tcp
+```
+- Bu sayede dışarı paket göndermek mümkünken, içeriye paket gönderilmesi engellenir ve ssh, http/tcp bağlantılarına izin verilir
+```sh
+ufw status
+ufw enable
+```
 - Kurulum ardından ssh, http ve https trafiğine izin verilir
 - Aşağıdaki komut kullanılarak geri kalan bütün bağlantılar reddedilir
 ```sh
@@ -25,26 +52,58 @@ sudo ufw default deny
 
 ##### 4. Apache veya Nginx web sunucu kurun.
 - Apache sunucusu kurulumu yapılır
+```sh
+sudo apt install apache2
+```
 - Ardından serveri yapılandırabilmek için /var/www dosyası içerisine oluşturulacak web siteleri için dosya açılır
 - Açılan klasörler için aşağıdaki komut kullanılarak, dosyanın sahibi için okuma, yazma ve yürütme, dosyanın grubu için okuma ve yürütme, diğer kullanıcıların ise sadece okuma izni verilir
-```sh 
-chmod -R 755 /var/www/bugdayorg şe
+```sh
+cd /var/www
+mkdir bugdayorg
+chmod -R 755 /var/www/bugdayorg
 ```
 
 ##### 5. bugday.org için, Wordpress'in son sürümünü kurun.
-- Wordpress kurmak için önce php ve mysql kurulumu yapılır
-- mysql kurulumundan sonra şifre belirlenir ve database oluşturulur
+- Wordpress kurmak için önce php, modülleri ve mysql kurulumu yapılır
+```sh
+apt install -y php php-{common,mysql,xml,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl}
+```sh
+apt install mariadb-server mariadb-client
+ ```
+- mysql kurulumu yapılır
+```sh
+mysql_secure_installation
+```
+- Daha sonra şifre belirlenir ve database oluşturulur
 - Database ile kullanıcı eşleştirilir
+```sh
+mysql
+CREATE USER 'yaki'@'ozgur' IDENTIFIED BY '456789';
+create database ozgur_db;
+GRANT ALL PRIVILEGES ON ozgur_db.* TO 'yaki'@'ozgur';
+FLUSH PRIVILEGES;
+```
 - Gerekli altyapı sağlandıktan sonra wordpress kurulumu yapılır
 - Kurulan wordpress /var/www/bugdayorg dosyası içerisine atılır
+```sh
+wget https://wordpress.org/latest.zip
+unzip latest.zip
+mv wordpress/ /var/www/bugdayorg/
+```
 - wordpress dosyası içinde 755 şeklinde izin verilir
 - Sonrasında apache sunucusu içerisinde sites-available dosyası içerisine .conf uzantılı bir dosya açılır
+```sh
+vim /etc/apache2/sites-available/bugdayorg.conf
+```
 - Bu dosya içerisine host, server admini, döküman yolu, server adı gibi bilgiler yazılır.
 - Ardından oluşturulan conf dosyası aşağıdaki komutla varsayılan olarak güncellenir
-```sh
-a2ensite x.conf
-```
 - Varsayılanları .conf dosyaları deaktif edilir ve sunucu resetlenir
+```sh
+a2ensite bugdayorg.conf
+a2enmod rewrite
+a2dissite 000-default.conf
+systemctl restart apache2
+```
 - Şimdi tarayıcıda sanal sunucu ip'si ile wordpress arayüzüne erişilebilir
 - Açılan arayüzde kullanıcı adı, şifre ve database ismi girilir
 
@@ -88,12 +147,21 @@ CustomLog ${APACHE_LOG_DIR}/access.log combined
 - /var/www içerisinde yeni bir dosya oluşturulur
 - index.html dosyası açılır ve içerisi sitenin anasayfası olacak şekilde düzenlenir
 - Bir for döngüsü ile 100 kere istenilen string sayfaya yazdırılır
+- Yazılan koda repo içerisindeki index.php'den ulaşılabilir
 
 ##### 9. ozgurstaj2024.com/yonetim adresine giriş parola korumasına sahip olmalı, sadece "ad.soyad" kullanıcı adı ve "parola" parolası ile girilebilmeli.
 - Bu adım için /var/www/ozgur içerisine yonetim.php dosyası oluşturulur
 - php ile kullanıcı adı ve şifre sorgusunun koşulları yazılır
-- aynı dosya içerisinde html ile input alanları ve buton eklenir bu sayede kullanıcından girdi alınır ve sorgulanır 
+- aynı dosya içerisinde html ile input alanları ve buton eklenir bu sayede kullanıcından girdi alınır ve sorgulanır
+- yazılan koda repo içerisindeki yonetim.php'den ulaşılabilir
 - ayrıca oluşturulacak .htaccess dosyası ile ozgurstaj2024.com/yonetim yazıldığında yonetim.php dosyasının çalıştırılması sağlanır
+```sh
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^/yonetim$ yonetim.php [NC,L]
+RewriteRule ^/index.html$ index.html [NC,L]
 
 ##### 10. Web sitesi hem www.ozgurstaj2024.com hem de ozgurstaj2024.com adresinden erişilebilir olmalıdır.
-- bugdayorg.conf dosyası içerisindeki gibi 2 farklı virtualhost bloğu açılır ve gerekli yerler istenildiği gibi doldurularak farklı dnsler ile aynı siteye erişilmesi mümkün kılınır
+- bugdayorg.conf dosyası içerisinde olduğu gibi 2 farklı virtualhost bloğu açılır ve gerekli yerler ozgurstaj2024 sitesi için doldurulur ve aynı siteye erişilmesi mümkün kılınır
