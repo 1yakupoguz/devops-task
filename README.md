@@ -1,6 +1,6 @@
-#### DevOps Ödevi
+### DevOps Ödevi
 
-##### 1.  Rocky 9, Debian 12 ya da Ubuntu LTS Server 22.04 dağıtımlarından birini kullanmalısınız. Dağıtım en az sayıda paketle kurulmuş olmalı ve servisin kendisiyle ilgili olmayan ek paketler kurulmamalı (ör: X sunucu) 
+#### 1.  Rocky 9, Debian 12 ya da Ubuntu LTS Server 22.04 dağıtımlarından birini kullanmalısınız. Dağıtım en az sayıda paketle kurulmuş olmalı ve servisin kendisiyle ilgili olmayan ek paketler kurulmamalı (ör: X sunucu) 
 - VirtualBox kurulur
 - Ubuntu 22.04 server iso dosyası indirilir
 - VirtualBox'a iso dosyası ile Ubuntu kurulur
@@ -8,7 +8,7 @@
 - Kurulumun ardından belirlenen kullanıcı adı ve şifre ile giriş yapılır
 - Sunucunun yapılandırılması için cloud-init kurulumu yapılır
 
-##### 2.  Bir kullanıcı oluşturmalısınız (root dışında). O kullanıcıya kendi (host) bilgisayarından SSH ile bağlanmalısınız. Bağlantı anahtar (key) temelli gerçekleştirilmeli. SSH servisi için parola ile doğrulamayı kapatın.
+#### 2.  Bir kullanıcı oluşturmalısınız (root dışında). O kullanıcıya kendi (host) bilgisayarından SSH ile bağlanmalısınız. Bağlantı anahtar (key) temelli gerçekleştirilmeli. SSH servisi için parola ile doğrulamayı kapatın.
 - Lokal bilgisayarda terminalde aşağıdaki komut kullanılarak ssh key oluşturulur
 ```sh 
 ssh-keygen
@@ -23,7 +23,7 @@ scp .ssh/id_rsa.pub yaki@192.168.x.x:~/yaki_rsa.pub
 cat yaki_rsa.pub >> .ssh/authorized_keys
 ```
 
-##### 3. Güvenlik duvarını SSH ve web servisi dışında herhangi bir isteği kabul etmeyecek biçimde ayarlayın.
+#### 3. Güvenlik duvarını SSH ve web servisi dışında herhangi bir isteği kabul etmeyecek biçimde ayarlayın.
 - Bunun için aşağıdaki komutla UFW kurulumu yapılır. UFW, güvenlik duvarı kurallarını yönetmeyi sağlamaktadır
 ```sh
 apt install ufw
@@ -63,7 +63,7 @@ mkdir bugdayorg
 chmod -R 755 /var/www/bugdayorg
 ```
 
-##### 5. bugday.org için, Wordpress'in son sürümünü kurun.
+#### 5. bugday.org için, Wordpress'in son sürümünü kurun.
 - Wordpress kurmak için önce php, modülleri ve mysql kurulumu yapılır
 ```sh
 apt install -y php php-{common,mysql,xml,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl}
@@ -107,12 +107,12 @@ systemctl restart apache2
 - Şimdi tarayıcıda sanal sunucu ip'si ile wordpress arayüzüne erişilebilir
 - Açılan arayüzde kullanıcı adı, şifre ve database ismi girilir
 
-##### 6.  Wordpress'te yeni bir yazı (post) yazın ve o yazıya bir dosya yükleyin. Yeni yazınıza SEO-uyumlu bir URL'den ulaşabilmelisiniz
+#### 6.  Wordpress'te yeni bir yazı (post) yazın ve o yazıya bir dosya yükleyin. Yeni yazınıza SEO-uyumlu bir URL'den ulaşabilmelisiniz
 - Wordpress başlangıç ekranında sayfa eklemek mümkün
 - Butona tıklayarak sayfaya istenilen yazı ve dosya eklenebilir
 - Ardından SEO'ya uygun şekilde sayfa isimlendirilir
 
-##### 7. Aynı Wordpress'in hem bugday.org hem de buğday.org ile erişilebilir olması gerekiyor.
+#### 7. Aynı Wordpress'in hem bugday.org hem de buğday.org ile erişilebilir olması gerekiyor.
 - Tekrardan conf dosyasını aşağıdaki gibi düzenleyerek iki farklı domain adresinin aynı wordpress sitesine erişmesini sağladık
 ```sh
 <VirtualHost *:80>
@@ -143,13 +143,13 @@ CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
 
-##### 8.  ozgurstaj2024.com için bir web sitesi oluşturun. Site için bir web sayfası oluşturun, içinde 100 kere "Kullanıcılarımın kişisel verilerini toplamayacağım." yazsın (her biri yeni bir satırda).
+#### 8.  ozgurstaj2024.com için bir web sitesi oluşturun. Site için bir web sayfası oluşturun, içinde 100 kere "Kullanıcılarımın kişisel verilerini toplamayacağım." yazsın (her biri yeni bir satırda).
 - /var/www içerisinde yeni bir dosya oluşturulur
 - index.html dosyası açılır ve içerisi sitenin anasayfası olacak şekilde düzenlenir
 - Bir for döngüsü ile 100 kere istenilen string sayfaya yazdırılır
 - Yazılan koda repo içerisindeki index.php'den ulaşılabilir
 
-##### 9. ozgurstaj2024.com/yonetim adresine giriş parola korumasına sahip olmalı, sadece "ad.soyad" kullanıcı adı ve "parola" parolası ile girilebilmeli.
+#### 9. ozgurstaj2024.com/yonetim adresine giriş parola korumasına sahip olmalı, sadece "ad.soyad" kullanıcı adı ve "parola" parolası ile girilebilmeli.
 - Bu adım için /var/www/ozgur içerisine yonetim.php dosyası oluşturulur
 - php ile kullanıcı adı ve şifre sorgusunun koşulları yazılır
 - aynı dosya içerisinde html ile input alanları ve buton eklenir bu sayede kullanıcından girdi alınır ve sorgulanır
@@ -162,6 +162,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^/yonetim$ yonetim.php [NC,L]
 RewriteRule ^/index.html$ index.html [NC,L]
+```
 
-##### 10. Web sitesi hem www.ozgurstaj2024.com hem de ozgurstaj2024.com adresinden erişilebilir olmalıdır.
+#### 10. Web sitesi hem www.ozgurstaj2024.com hem de ozgurstaj2024.com adresinden erişilebilir olmalıdır.
 - bugdayorg.conf dosyası içerisinde olduğu gibi 2 farklı virtualhost bloğu açılır ve gerekli yerler ozgurstaj2024 sitesi için doldurulur ve aynı siteye erişilmesi mümkün kılınır
