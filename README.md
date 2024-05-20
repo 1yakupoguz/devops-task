@@ -67,7 +67,6 @@ chmod -R 755 /var/www/bugdayorg
 - Wordpress kurmak için önce php, modülleri ve mysql kurulumu yapılır
 ```sh
 apt install -y php php-{common,mysql,xml,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl}
-```sh
 apt install mariadb-server mariadb-client
  ```
 - mysql kurulumu yapılır
