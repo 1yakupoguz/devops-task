@@ -50,7 +50,7 @@ ufw enable
 sudo ufw default deny
 ```
 
-##### 4. Apache veya Nginx web sunucu kurun.
+#### 4. Apache veya Nginx web sunucu kurun.
 - Apache sunucusu kurulumu yapılır
 ```sh
 sudo apt install apache2
